@@ -2,16 +2,8 @@
 using System.Collections;
 
 public class MineScript : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    public float money = 5.0f;
+    public float stamina = 20.0f;
 
     void OnMouseOver()
     {
@@ -23,11 +15,12 @@ public class MineScript : MonoBehaviour {
 
     void Mine()
     {
-        if (PlayerData.stamina - 20 >= 0)
+        float requiredStamina = stamina / PlayerData.pickaxe_level;
+        if (PlayerData.stamina - requiredStamina >= 0)
         {
-            PlayerData.money = PlayerData.money + 5;
-            PlayerData.stamina = PlayerData.stamina - 20;
-            Debug.Log("Money: " + PlayerData.money + "\nStamina: " + PlayerData.stamina);
+            PlayerData.money = PlayerData.money + money*PlayerData.pickaxe_level;
+            PlayerData.stamina = PlayerData.stamina - requiredStamina;
+            //Debug.Log("Money: " + PlayerData.money + "\nStamina: " + PlayerData.stamina);
         }
     }
 }
