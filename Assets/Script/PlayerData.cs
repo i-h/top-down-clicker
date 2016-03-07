@@ -6,10 +6,12 @@ public class PlayerData : MonoBehaviour {
     public static float stamina = 100;
     public static float max_stamina = 100;
     public static int pickaxe_level = 1;
+    public static Transform instance;
 
 
 	// Use this for initialization
 	void Start () {
+        instance = transform;
 	
 	}
 	

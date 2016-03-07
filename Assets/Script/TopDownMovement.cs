@@ -17,10 +17,5 @@ public class TopDownMovement : MonoBehaviour {
         move_vector.z = Input.GetAxis("Vertical");
 
         rigidbody.MovePosition(transform.position+move_vector*speed*Time.deltaTime);
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            rigidbody.AddForce(Vector3.up * jump_force);
-        }
 	}
 }
