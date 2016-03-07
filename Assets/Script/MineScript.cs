@@ -2,16 +2,21 @@
 using System.Collections;
 
 public class MineScript : MonoBehaviour {
-    public float money = 5.0f;
-    public float stamina = 20.0f;
-    public Transform coin;
-    Vector3 launchDir = new Vector3();
-    int moneyYield = 0;
-    bool running = false;
+    public static float staminaConsumption = 20.0f;
+    public static float yield = 5.0f;
+	// Use this for initialization
+	void Start () {
+	
+	}
+	
+	// Update is called once per frame
+	void Update () {
+	
+	}
 
     void OnMouseOver()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
         {
             Mine();
         }
@@ -19,39 +24,29 @@ public class MineScript : MonoBehaviour {
 
     void Mine()
     {
-        float requiredStamina = stamina / PlayerData.pickaxe_level;
-        if (PlayerData.stamina - requiredStamina >= 0)
+        if (PlayerData.stamina - GetStaminaConsumption() >= 0)
         {
-            if (coin)
-            {
-                moneyYield += Mathf.RoundToInt(money * PlayerData.pickaxe_level);
-                if (!running)
-                {
-                    StartCoroutine(giveCoins());
-                }
-            }
-            else
-            {
-                PlayerData.money = PlayerData.money + money * PlayerData.pickaxe_level;
-            }
-
-            PlayerData.stamina = PlayerData.stamina - requiredStamina;
-            //Debug.Log("Money: " + PlayerData.money + "\nStamina: " + PlayerData.stamina);
+            YieldResources();
+            ConsumeStamina();
+            Debug.Log("Money: " + PlayerData.money + "\nStamina: " + PlayerData.stamina);
         }
     }
 
-    IEnumerator giveCoins()
+    void ConsumeStamina()
     {
-        running = true;
-        for (int i = 0; i < moneyYield; i++)
-        {
-            Transform coin_obj = Transform.Instantiate(coin, transform.position + Vector3.up * 2 + Random.insideUnitSphere, Quaternion.identity) as Transform;
-            launchDir.x = Random.insideUnitCircle.x;
-            launchDir.z = Random.insideUnitCircle.y;
-            launchDir.y = Random.Range(1.0f, 10.0f);
-            coin_obj.rigidbody.AddForce(launchDir, ForceMode.Impulse);
-            yield return new WaitForSeconds(0.05f);
-        }
-        running = false;
+        PlayerData.stamina = PlayerData.stamina - GetStaminaConsumption();
+    }
+    void YieldResources()
+    {
+        PlayerData.money = PlayerData.money + GetResourceYield();
+
+    }
+    public static float GetStaminaConsumption()
+    {
+        return staminaConsumption / PlayerData.pickaxe_level;
+    }
+    public static float GetResourceYield()
+    {
+        return 5.0f * PlayerData.pickaxe_level;
     }
 }
