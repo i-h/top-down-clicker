@@ -4,6 +4,7 @@ using System.Collections;
 public class MoneyCoin : MonoBehaviour {
     public float grabDistance = 2.0f;
     public float moneyYield = 1.0f;
+    bool returnMode = false;
     void OnTriggerEnter(Collider c)
     {
         if (c.gameObject.CompareTag("Player"))
@@ -26,9 +27,14 @@ public class MoneyCoin : MonoBehaviour {
     }
     void Update()
     {
-        if (Input.GetKey(KeyCode.Space)){
-            Vector3 tgt = PlayerData.instance.position - transform.position;
-            rigidbody.AddForce(tgt.normalized * 20);
+        Vector3 tgt = PlayerData.instance.position - transform.position;
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            returnMode = true;
+            rigidbody.useGravity = false;
+        }
+        if (returnMode){
+            rigidbody.AddForce((tgt+transform.right*2).normalized * 50 * rigidbody.mass);
         }
     }
 

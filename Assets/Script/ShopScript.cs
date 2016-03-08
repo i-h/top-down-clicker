@@ -22,7 +22,7 @@ public class ShopScript : MonoBehaviour {
             requiredMoney = firstLevelUp * Mathf.Pow(2, PlayerData.pickaxe_level - 1);
 
             // If the player can afford the level up
-            if (PlayerData.money >= requiredMoney || true)
+            if (PlayerData.money >= requiredMoney)
             {
                 PlayerData.pickaxe_level++;
                 PlayerData.money -= requiredMoney;

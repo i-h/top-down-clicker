@@ -7,9 +7,11 @@ public class MineScript : MonoBehaviour
     public float stamina = 20.0f;
     public Transform coin;
     public float unloadSpeed = 0.01f;
+    public float launchForce = 0.0f;
     Vector3 launchDir = new Vector3();
     int moneyYield = 0;
     bool running = false;
+    public Transform spawnPosition;
 
 
     void OnMouseOver()
@@ -25,14 +27,14 @@ public class MineScript : MonoBehaviour
         float requiredStamina = stamina / PlayerData.pickaxe_level;
         if (PlayerData.stamina - requiredStamina >= 0)
         {
+            moneyYield = Mathf.RoundToInt(money * Mathf.Pow(2, PlayerData.pickaxe_level));
             if (coin)
             {
-                moneyYield += Mathf.RoundToInt(money * PlayerData.pickaxe_level);
                     StartCoroutine(giveCoins(moneyYield));
             }
             else
             {
-                PlayerData.money = PlayerData.money + money * PlayerData.pickaxe_level;
+                PlayerData.money += moneyYield;
             }
 
             PlayerData.stamina = PlayerData.stamina - requiredStamina;
@@ -42,34 +44,41 @@ public class MineScript : MonoBehaviour
 
     IEnumerator giveCoins(int amount)
     {
+        Vector3 spawnPos;
         running = true;
-        int depth = 0;
-        ArrayList amounts = new ArrayList();
-        int factor = 1;
-        int totalYield = (int)Mathf.Pow(10, factor - 1);
+        int factor;
+        //int totalYield = (int)Mathf.Pow(10, factor - 1);
 
-        while (amount / Mathf.Pow(10, depth) < 1)
+        if (spawnPosition)
         {
-            amounts[depth] = amount % Mathf.Pow(10, depth);
-            depth++;
+            spawnPos = spawnPosition.position;
         }
-        Debug.Log("Depth: " + depth + "\n" + amounts.Count);
-
+        else
+        {
+            spawnPos = transform.position;
+        }
         while (amount > 0)
         {
+            factor = 1;
+            while (amount > Mathf.Pow(10, factor))
+            {
+                factor += 1;
+            }
+            Debug.Log("Amount: " + amount + "\nFactor" + factor);
 
-            Transform coin_obj = Transform.Instantiate(coin, transform.position + Vector3.up * 2 + Random.insideUnitSphere, Random.rotation) as Transform;
+            Transform coin_obj = Transform.Instantiate(coin, spawnPos + Vector3.up * 2 + Random.insideUnitSphere, Random.rotation) as Transform;
             launchDir.x = Random.insideUnitCircle.x;
             launchDir.z = Random.insideUnitCircle.y;
             launchDir.y = 1.0f*factor;
-            coin_obj.localScale *= factor;
-            coin_obj.rigidbody.AddForce(launchDir.normalized*10, ForceMode.Impulse);
+            coin_obj.localScale = Vector3.one*factor/2.0f;
+            coin_obj.rigidbody.mass = factor;
+            coin_obj.rigidbody.AddForce((launchDir.normalized*10*coin_obj.rigidbody.mass+transform.forward)*launchForce, ForceMode.Impulse);
 
             MoneyCoin coin_script = coin_obj.GetComponent<MoneyCoin>();
-            coin_script.moneyYield = totalYield*100;
-            amount -= totalYield;
+            coin_script.moneyYield = Mathf.Pow(10, factor-1);
+            amount -= (int)Mathf.Pow(10, factor-1);
 
-            yield return new WaitForSeconds(unloadSpeed*factor);
+            yield return new WaitForSeconds(unloadSpeed);
         }
         running = false;
     }
