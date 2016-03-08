@@ -4,7 +4,7 @@ using System.Collections;
 public class MoneyCoin : MonoBehaviour {
     public float grabDistance = 2.0f;
     public float moneyYield = 1.0f;
-    void OnCollisionEnter(Collision c)
+    void OnTriggerEnter(Collider c)
     {
         if (c.gameObject.CompareTag("Player"))
         {
@@ -21,7 +21,7 @@ public class MoneyCoin : MonoBehaviour {
     {
         if (Input.GetMouseButton(0))
         {
-            PickUp();
+            //PickUp();
         }
     }
     void Update()

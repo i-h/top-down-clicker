@@ -20,10 +20,9 @@ public class ShopScript : MonoBehaviour {
             float requiredMoney;
             //requiredMoney = firstLevelUp * PlayerData.pickaxe_level;
             requiredMoney = firstLevelUp * Mathf.Pow(2, PlayerData.pickaxe_level - 1);
-            Debug.Log(requiredMoney);
 
             // If the player can afford the level up
-            if (PlayerData.money >= requiredMoney)
+            if (PlayerData.money >= requiredMoney || true)
             {
                 PlayerData.pickaxe_level++;
                 PlayerData.money -= requiredMoney;
