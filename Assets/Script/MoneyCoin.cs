@@ -34,7 +34,8 @@ public class MoneyCoin : MonoBehaviour {
             rigidbody.useGravity = false;
         }
         if (returnMode){
-            rigidbody.AddForce((tgt+transform.right*2).normalized * 50 * rigidbody.mass);
+            //rigidbody.AddForce((tgt+transform.right*2).normalized * 50 * rigidbody.mass);
+            rigidbody.velocity += tgt;
         }
     }
 
