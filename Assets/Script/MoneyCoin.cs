@@ -4,7 +4,14 @@ using System.Collections;
 public class MoneyCoin : MonoBehaviour {
     public float grabDistance = 2.0f;
     public float moneyYield = 1.0f;
+    public float returnSpeed = 5.0f;
+    public float lifeTime = 5.0f;
     bool returnMode = false;
+    float startTime;
+    void Start()
+    {
+        startTime = Time.time;
+    }
     void OnTriggerEnter(Collider c)
     {
         if (c.gameObject.CompareTag("Player"))
@@ -28,14 +35,16 @@ public class MoneyCoin : MonoBehaviour {
     void Update()
     {
         Vector3 tgt = PlayerData.instance.position - transform.position;
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (!returnMode && (Input.GetKeyDown(KeyCode.Space) || Time.time - startTime > lifeTime))
         {
             returnMode = true;
             rigidbody.useGravity = false;
+            collider.enabled = false;
         }
         if (returnMode){
+            
             //rigidbody.AddForce((tgt+transform.right*2).normalized * 50 * rigidbody.mass);
-            rigidbody.velocity += tgt;
+            rigidbody.velocity = tgt * returnSpeed;
         }
     }
 
