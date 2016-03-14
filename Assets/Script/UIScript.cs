@@ -7,6 +7,8 @@ public class UIScript : MonoBehaviour {
     public Text moneyText;
     public Text staminaText;
 
+    public Image staminaBar;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -16,6 +18,8 @@ public class UIScript : MonoBehaviour {
 	void Update () {
         levelText.text = "Level: " + PlayerData.pickaxe_level;
         moneyText.text = "Money: " + PlayerData.money;
-        staminaText.text = "Stamina: " + PlayerData.stamina;
+        staminaText.text = "Stamina: " +  PlayerData.stamina.ToString("f1");
+        //staminaText.text = "Stamina: " + Mathf.Round(PlayerData.stamina);
+        staminaBar.fillAmount = PlayerData.stamina / PlayerData.max_stamina;
 	}
 }

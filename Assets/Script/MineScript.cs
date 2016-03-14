@@ -4,10 +4,9 @@ using System.Collections;
 public class MineScript : MonoBehaviour {
     public float money = 5.0f;
     public float stamina = 20.0f;
-    public Transform coin;
-    Vector3 launchDir = new Vector3();
-    int moneyYield = 0;
-    bool running = false;
+
+    public float crit_chance = 0.01f;
+    public float crit_multiplier = 10.0f;
 
     void OnMouseOver()
     {
@@ -22,36 +21,21 @@ public class MineScript : MonoBehaviour {
         float requiredStamina = stamina / PlayerData.pickaxe_level;
         if (PlayerData.stamina - requiredStamina >= 0)
         {
-            if (coin)
+            // Check critical hit
+            if (Random.value < crit_chance)
             {
-                moneyYield += Mathf.RoundToInt(money * PlayerData.pickaxe_level);
-                if (!running)
-                {
-                    StartCoroutine(giveCoins());
-                }
+                // Critical hit true
+                PlayerData.money = PlayerData.money + money * PlayerData.pickaxe_level * crit_multiplier;
+                particleSystem.Play();                
             }
             else
             {
+                // Normal hit
                 PlayerData.money = PlayerData.money + money * PlayerData.pickaxe_level;
             }
 
             PlayerData.stamina = PlayerData.stamina - requiredStamina;
             //Debug.Log("Money: " + PlayerData.money + "\nStamina: " + PlayerData.stamina);
         }
-    }
-
-    IEnumerator giveCoins()
-    {
-        running = true;
-        for (int i = 0; i < moneyYield; i++)
-        {
-            Transform coin_obj = Transform.Instantiate(coin, transform.position + Vector3.up * 2 + Random.insideUnitSphere, Quaternion.identity) as Transform;
-            launchDir.x = Random.insideUnitCircle.x;
-            launchDir.z = Random.insideUnitCircle.y;
-            launchDir.y = Random.Range(1.0f, 10.0f);
-            coin_obj.rigidbody.AddForce(launchDir, ForceMode.Impulse);
-            yield return new WaitForSeconds(0.05f);
-        }
-        running = false;
     }
 }
