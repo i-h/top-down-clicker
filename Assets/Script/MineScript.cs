@@ -74,6 +74,8 @@ public class MineScript : MonoBehaviour
             coin_obj.rigidbody.mass = factor;
             coin_obj.rigidbody.AddForce((launchDir.normalized*10*coin_obj.rigidbody.mass+transform.forward)*launchForce, ForceMode.Impulse);
 
+            coin_obj.name = "t" + factor + " money";
+
             MoneyCoin coin_script = coin_obj.GetComponent<MoneyCoin>();
             coin_script.moneyYield = Mathf.Pow(10, factor-1);
             amount -= (int)Mathf.Pow(10, factor-1);

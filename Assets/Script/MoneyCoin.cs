@@ -4,7 +4,7 @@ using System.Collections;
 public class MoneyCoin : MonoBehaviour {
     public float grabDistance = 2.0f;
     public float moneyYield = 1.0f;
-    public float returnSpeed = 5.0f;
+    public float returnSpeed = 10.0f;
     public float lifeTime = 5.0f;
     bool returnMode = false;
     float startTime;
@@ -35,7 +35,7 @@ public class MoneyCoin : MonoBehaviour {
     void Update()
     {
         Vector3 tgt = PlayerData.instance.position - transform.position;
-        if (!returnMode && (Input.GetKeyDown(KeyCode.Space) || Time.time - startTime > lifeTime))
+        if (!returnMode && (Input.GetKeyDown(KeyCode.Space) || Time.time - startTime > lifeTime || tgt.magnitude < grabDistance))
         {
             returnMode = true;
             rigidbody.useGravity = false;
@@ -44,7 +44,7 @@ public class MoneyCoin : MonoBehaviour {
         if (returnMode){
             
             //rigidbody.AddForce((tgt+transform.right*2).normalized * 50 * rigidbody.mass);
-            rigidbody.velocity = tgt * returnSpeed;
+            rigidbody.velocity = tgt.normalized*returnSpeed + tgt*returnSpeed/10;
         }
     }
 
