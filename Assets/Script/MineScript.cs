@@ -10,7 +10,6 @@ public class MineScript : MonoBehaviour
     public float launchForce = 0.0f;
     Vector3 launchDir = new Vector3();
     int moneyYield = 0;
-    bool running = false;
     public Transform spawnPosition;
 
 
@@ -45,7 +44,6 @@ public class MineScript : MonoBehaviour
     IEnumerator giveCoins(int amount)
     {
         Vector3 spawnPos;
-        running = true;
         int factor;
         //int totalYield = (int)Mathf.Pow(10, factor - 1);
 
@@ -82,6 +80,5 @@ public class MineScript : MonoBehaviour
 
             yield return new WaitForSeconds(unloadSpeed);
         }
-        running = false;
     }
 }

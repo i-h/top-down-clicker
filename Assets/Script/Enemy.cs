@@ -5,18 +5,28 @@ public class Enemy : MonoBehaviour
 {
     public Transform itemDrop;
     public int dropAmount = 1;
+    public int health = 10;
 
 	// Use this for initialization
     void Start()
     {
         tag = "Enemy";
-	
-	}
+        name = "Enemy " + GetHashCode();
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
 	
 	}
+    public void TakeDamage(int amount)
+    {
+        health -= amount;
+        if(health <= 0)
+        {
+            Die();
+        }
+    }
     public void Die()
     {
         StartCoroutine(giveCoins(dropAmount));

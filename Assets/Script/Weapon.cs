@@ -2,9 +2,8 @@
 using System.Collections;
 
 public class Weapon : MonoBehaviour {
-    //public WeaponAnimation anim = new WeaponAnimation();
     public bool damaging = false;
-    public bool attacking = false;
+    public int damage = 10;
 	// Use this for initialization
 	void Start () {
 	}
@@ -13,14 +12,17 @@ public class Weapon : MonoBehaviour {
 	void Update () {
 	
 	}
-
+    int GetDamage()
+    {
+        return damage + damage / 5 * PlayerData.pickaxe_level-1;
+    }
     void OnCollisionEnter(Collision c)
     {
         if (damaging)
         {
             if (c.gameObject.CompareTag("Enemy"))
             {
-                c.gameObject.GetComponent<Enemy>().Die();
+                c.gameObject.GetComponent<Enemy>().TakeDamage(GetDamage());
             }
         }
     }
@@ -28,16 +30,4 @@ public class Weapon : MonoBehaviour {
     {
         animation.Play("swing");
     }
-}
-[System.Serializable]
-public struct WeaponAnimation
-{
-    public float duration;
-    public AnimationCurve rot_x;
-    public AnimationCurve rot_y;
-    public AnimationCurve rot_z;
-    public AnimationCurve pos_x;
-    public AnimationCurve pos_y;
-    public AnimationCurve pos_z;
-    public AnimationCurve collisionOn;
 }

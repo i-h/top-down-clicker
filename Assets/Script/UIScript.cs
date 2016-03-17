@@ -6,6 +6,7 @@ public class UIScript : MonoBehaviour {
     public Text levelText;
     public Text moneyText;
     public Text staminaText;
+    public Text healthText;
 
 	// Use this for initialization
 	void Start () {
@@ -17,5 +18,6 @@ public class UIScript : MonoBehaviour {
         levelText.text = "Level: " + PlayerData.pickaxe_level;
         moneyText.text = "Money: " + PlayerData.money;
         staminaText.text = "Stamina: " + PlayerData.stamina;
+        healthText.text = "HP: " + PlayerData.health;
 	}
 }
