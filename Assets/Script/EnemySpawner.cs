@@ -19,6 +19,8 @@ public class EnemySpawner : MonoBehaviour {
         if (enemyPrefab)
         {
             Transform enemy_obj = Transform.Instantiate(enemyPrefab, transform.position + Random.insideUnitSphere + Vector3.up, Quaternion.identity) as Transform;
+            enemy_obj.localScale *= PlayerData.pickaxe_level;
+            enemy_obj.rigidbody.mass *= PlayerData.pickaxe_level*10;
             Enemy enemy_script = enemy_obj.GetComponent<Enemy>();
             enemy_script.health *= PlayerData.pickaxe_level;
             enemy_script.dropAmount = enemy_script.health * 2;
