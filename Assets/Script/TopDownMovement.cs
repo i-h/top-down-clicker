@@ -16,6 +16,6 @@ public class TopDownMovement : MonoBehaviour {
         move_vector.x = Input.GetAxis("Horizontal");
         move_vector.z = Input.GetAxis("Vertical");
 
-        rigidbody.MovePosition(transform.position+move_vector*speed*Time.deltaTime);
+        GetComponent<Rigidbody>().MovePosition(transform.position+move_vector*speed*Time.deltaTime);
 	}
 }

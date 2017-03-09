@@ -54,8 +54,8 @@ public class Enemy : MonoBehaviour
             launchDir.z = Random.insideUnitCircle.y;
             launchDir.y = 1.0f * factor;
             coin_obj.localScale = Vector3.one * factor / 2.0f;
-            coin_obj.rigidbody.mass = factor;
-            coin_obj.rigidbody.AddForce((launchDir.normalized * 10 * coin_obj.rigidbody.mass + transform.forward) * launchForce, ForceMode.Impulse);
+            coin_obj.GetComponent<Rigidbody>().mass = factor;
+            coin_obj.GetComponent<Rigidbody>().AddForce((launchDir.normalized * 10 * coin_obj.GetComponent<Rigidbody>().mass + transform.forward) * launchForce, ForceMode.Impulse);
 
             coin_obj.name = "t" + factor + " money";
 

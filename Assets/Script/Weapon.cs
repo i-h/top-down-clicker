@@ -28,6 +28,6 @@ public class Weapon : MonoBehaviour {
     }
     public void Attack()
     {
-        animation.Play("swing");
+        GetComponent<Animation>().Play("swing");
     }
 }

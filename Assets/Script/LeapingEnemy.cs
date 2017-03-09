@@ -50,7 +50,7 @@ public class LeapingEnemy : MonoBehaviour {
         bool angle_z = angles.z > tip_threshold && angles.z < 360 - tip_threshold;
         bool angle = angle_x || angle_z;
 
-        return angle && rigidbody.angularVelocity.magnitude <= vel_threshold;
+        return angle && GetComponent<Rigidbody>().angularVelocity.magnitude <= vel_threshold;
     }
 
     void ChangeBehaviour(BehaviourMode newMode)
@@ -83,17 +83,17 @@ public class LeapingEnemy : MonoBehaviour {
         switch (currentBehaviour)
         {
             case BehaviourMode.Leap:
-                renderer.material.color = Color.red;
+                GetComponent<Renderer>().material.color = Color.red;
                 leap_target = (target_dir + Vector3.up * 2) * leap_force;
-                rigidbody.AddForce(leap_target*rigidbody.mass, ForceMode.Impulse);
+                GetComponent<Rigidbody>().AddForce(leap_target*GetComponent<Rigidbody>().mass, ForceMode.Impulse);
                 leaping = true;
                 Invoke("ResetLeap", leap_cooldown);
                 ChangeBehaviour(BehaviourMode.Idle);
                 break;
             case BehaviourMode.Approach:
-                renderer.material.color = Color.green;
+                GetComponent<Renderer>().material.color = Color.green;
                 // Move towards player
-                rigidbody.MovePosition(transform.position + target_dir.normalized * move_speed * Time.deltaTime);
+                GetComponent<Rigidbody>().MovePosition(transform.position + target_dir.normalized * move_speed * Time.deltaTime);
                 Vector3 look_dir = transform.position;
                 look_dir.x += target_dir.x;
                 look_dir.z += target_dir.z;
@@ -101,7 +101,7 @@ public class LeapingEnemy : MonoBehaviour {
                 break;
             case BehaviourMode.GetUp:
                 //Debug.Log(name + " needs to get up!\nAngularVelocity: " + rigidbody.angularVelocity + "\tVelocity: " + rigidbody.velocity.magnitude);
-                renderer.material.color = Color.yellow;
+                GetComponent<Renderer>().material.color = Color.yellow;
                 if (getup.Equals(null)) {
                     getup = new GetUpProcedure();
                 } else if (!getup.started)
@@ -123,7 +123,7 @@ public class LeapingEnemy : MonoBehaviour {
                 } else
                 {
                     transform.rotation = getup.target_angle;
-                    transform.rigidbody.angularVelocity = Vector3.zero;
+                    transform.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
                     ChangeBehaviour(BehaviourMode.Idle);
                     getup = new GetUpProcedure();
                 }
@@ -131,7 +131,7 @@ public class LeapingEnemy : MonoBehaviour {
                 break;
             case BehaviourMode.Idle:
             default:
-                renderer.material.color = Color.white;
+                GetComponent<Renderer>().material.color = Color.white;
 
                 break;
         }

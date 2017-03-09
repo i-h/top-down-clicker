@@ -38,13 +38,13 @@ public class MoneyCoin : MonoBehaviour {
         if (!returnMode && (Input.GetKeyDown(KeyCode.Space) || Time.time - startTime > lifeTime || tgt.magnitude < grabDistance))
         {
             returnMode = true;
-            rigidbody.useGravity = false;
-            collider.enabled = false;
+            GetComponent<Rigidbody>().useGravity = false;
+            GetComponent<Collider>().enabled = false;
         }
         if (returnMode){
             
             //rigidbody.AddForce((tgt+transform.right*2).normalized * 50 * rigidbody.mass);
-            rigidbody.velocity = tgt.normalized*returnSpeed + tgt*returnSpeed/10;
+            GetComponent<Rigidbody>().velocity = tgt.normalized*returnSpeed + tgt*returnSpeed/10;
         }
     }
 
